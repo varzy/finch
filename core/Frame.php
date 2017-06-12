@@ -10,12 +10,17 @@
 namespace core;
 
 
-class frame
+class Frame
 {
 
     /**
-     * frame constructor.
+     * ! TODO
+     * - autoloader
+     * - route
+     * - custom function
      */
+
+
     public static function run()
     {
         self::startSession();
@@ -23,6 +28,7 @@ class frame
         self::readConfig();
         self::isDebug();
         self::autoLoader();
+        self::route();
     }
 
     private static function startSession()
@@ -48,7 +54,12 @@ class frame
 
     private static function autoLoader()
     {
-        
+
+    }
+
+    private static function route()
+    {
+        $url = trim('/', $_SERVER['REQUEST_URI']);
     }
 
 }

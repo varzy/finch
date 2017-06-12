@@ -4,7 +4,7 @@
 define('__ROOT__', dirname(__DIR__));
 
 // load real entry php file
-require __ROOT__ . '/core/frame.php';
+require __ROOT__ . '/core/Frame.php';
 
 // run it!
-frame::run();
+\core\Frame::run();

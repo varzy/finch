@@ -14,11 +14,12 @@ return [
      * Database
      */
 
-    'DB_TYPE' => '',
-    'DB_HOST' => '',
+    'DB_TYPE' => 'mysql',
+    'DB_HOST' => 'localhost',
+    'DB_PORT' => '3306',
+    'DB_CHARSET' => 'utf8',
+    'DB_NAME' => '',
     'DB_USER' => '',
     'DB_PWD' => '',
-    'DB_PORT' => '',
-    'DB_CHARSET' => 'utf8',
 
 ];
