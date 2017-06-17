@@ -14,9 +14,6 @@ use PDOException;
 
 /**
  * Class DBLink
- *
- * 使用单例类模式
- *
  * @package core
  */
 class DBLink
@@ -69,7 +66,7 @@ class DBLink
     }
 
     /**
-     *
+     * Connect to database
      */
     private function linkDB()
     {

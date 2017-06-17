@@ -11,8 +11,6 @@ namespace core;
 
 class Controller
 {
-    /**
-     * set smarty here
-     */
+
 
 }

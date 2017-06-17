@@ -22,4 +22,18 @@ return [
     'DB_USER' => '',
     'DB_PWD' => '',
 
+    /**
+     * Pages
+     */
+
+    'DEFAULT_MODULE' => 'http',
+    'DEFAULT_CONTROLLER' => 'Index',
+    'DEFAULT_ACTION' => 'index',
+
+    /**
+     * Include self libs
+     */
+
+    'FUNCTION_LIB' => 'preset , lib',
+
 ];

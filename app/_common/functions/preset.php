@@ -1,10 +1,13 @@
 <?php
 
-namespace app\_common;
-
-function sayHello()
+function say_hi()
 {
     echo 'hello, world';
+}
+
+function do_nothing()
+{
+    ;
 }
 
 function debug($var)
