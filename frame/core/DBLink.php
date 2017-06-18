@@ -6,7 +6,7 @@
  * Time: 8:47 AM
  */
 
-namespace core;
+namespace frame\core;
 
 
 use PDO;

@@ -1,3 +1,5 @@
 <?php
-require_once('../core/Frame.php');
-\core\Frame::run();
+
+require_once('../frame/core/Entry.php');
+
+\frame\core\Entry::run();

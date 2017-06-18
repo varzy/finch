@@ -34,6 +34,8 @@ return [
      * Include self libs
      */
 
-    'FUNCTION_LIB' => 'preset , lib',
+    // insert your custom function lib here, and use `,` to split them
+    // then, put your custom functions in `/frame/function`
+    'FUNCTIONS' => '',
 
 ];
