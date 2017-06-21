@@ -1,0 +1,12 @@
+{
+  "name": "zy/r_finch",
+  "authors": [
+    {
+      "name": "zy",
+      "email": "g@zyis.me"
+    }
+  ],
+  "require": {
+    "noahbuscher/macaw": "dev-master"
+  }
+}

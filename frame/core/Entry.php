@@ -8,6 +8,7 @@
  */
 
 namespace frame\core;
+use NoahBuscher\Macaw\Macaw;
 
 /**
  * Class Entry
@@ -124,7 +125,11 @@ class Entry
      */
     private static function route()
     {
-        say_hi();
+        Macaw::get('/(:any)', function ($slug) {
+            echo 'The slug is: ' . $slug;
+        });
+
+        Macaw::dispatch();
     }
 
 }

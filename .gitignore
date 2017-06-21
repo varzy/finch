@@ -5,4 +5,5 @@
 !.vscode/extensions.json
 
 .idea
-node_modules
+vendor/*
+node_modules/*
