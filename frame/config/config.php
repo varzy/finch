@@ -19,14 +19,23 @@ return [
         'HOST' => 'localhost',
         'PORT' => '3306',
         'CHARSET' => 'utf8',
-        'NAME' => '',
-        'USER' => '',
-        'PASSWORD' => ''
+        'NAME' => '_test',
+        'USER' => 'root',
+        'PASSWORD' => 'aidenm'
     ],
 
     /**
-     * Include self libs
+     * Functions
+     * You can write your customized function file'name here, and put your
+     * function files in `/frame/function/`. Your function file must with `.php`
      */
-    'FUNCTIONS' => ''
+    'FUNCTIONS' => ['preset'],
+
+    /**
+     * Routes
+     * You can write your customized route file's name here, and put your
+     * route files in `/frame/route/`. Your route file must with `.php`
+     */
+    'ROUTES' => ['web']
 
 ];

@@ -7,9 +7,9 @@
  * Time: 10:21 PM
  */
 
-namespace frame\core;
+namespace core;
 
-//use NoahBuscher\Macaw\Macaw;
+use NoahBuscher\Macaw\Macaw;
 
 /**
  * Class Entry
@@ -72,6 +72,7 @@ class Entry
         define('_CORE_', __FRAME__ . '/core');
         define('_CONFIG_', __FRAME__ . '/config');
         define('_FUNCTION_', __FRAME__ . '/function');
+        define('_ROUTE_', __FRAME__ . '/route');
     }
 
     /**
@@ -113,10 +114,7 @@ class Entry
      */
     private static function getFunctions()
     {
-        require_once(_FUNCTION_ . '/preset.php');
-
-        $functions = explode(',', $GLOBALS['conf']['FUNCTIONS']);
-        foreach ($functions as $key => $function) {
+        foreach ($GLOBALS['conf']['FUNCTIONS'] as $key => $function) {
             $funcPath = _FUNCTION_ . '/' . trim($function) . '.php';
             if (file_exists($funcPath)) require_once($funcPath);
         }
@@ -128,13 +126,37 @@ class Entry
     private static function autoLoader()
     {
         spl_autoload_register(function ($className) {
+
+
             // judge the class whether loaded
             if (isset(self::$classMap[$className])) return;
 
-            $class = __ROOT__ . '/' . $className . '.php';
-            $class = str_replace('\\', '/', $class);
-            if (file_exists($class)) require_once($class);
-            self::$classMap[$className] = $className;
+            $classedPaths = [__APP__, __FRAME__];
+
+            // ! TODO: fix autoload method
+            foreach ($classedPaths as $key => $classedPath) {
+
+
+                if ($classedPath === __APP__) {
+                    $module = substr($className, 0, strpos($className, '\\'));
+                    if ($module !== 'core') {
+                        $GLOBALS['CONTROLLER'] = $module . '/Controller';
+                        $GLOBALS['MODEL'] = $module . '/Model';
+                        $GLOBALS['VIEW'] = $module . '/View';
+                    }
+//
+//
+//                    define('_CONTROLLER_', $module . '/Controller');
+//                    define('_CONTROLLER_', $module . '/Controller');
+//                    define('_MODEL_', $module . '/Model');
+//                    define('_VIEW_', $module . '/view');
+                }
+                $class = $classedPath . '/' . $className . '.php';
+                $class = str_replace('\\', '/', $class);
+                if (file_exists($class)) require_once($class);
+                self::$classMap[$className] = $className;
+            }
+
         });
     }
 
@@ -143,7 +165,14 @@ class Entry
      */
     private static function route()
     {
+        require_once(__ROOT__ . '/vendor/autoload.php');
 
+        foreach ($GLOBALS['conf']['ROUTES'] as $key => $route) {
+            $routePath = _ROUTE_ . '/' . trim($route) . '.php';
+            if (file_exists($routePath)) require_once($routePath);
+        }
+
+        Macaw::dispatch();
     }
 
 }

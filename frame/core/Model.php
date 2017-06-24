@@ -6,7 +6,7 @@
  * Time: 8:46 AM
  */
 
-namespace frame\core;
+namespace core;
 
 
 use PDO;
@@ -18,7 +18,7 @@ class Model
 
     public function __construct()
     {
-        require_once('./DBLink.php');
+//        require_once('./DBLink.php');
         $dbLink = DBLink::getLink();
         $this->link = $dbLink->link;
     }

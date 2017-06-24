@@ -6,7 +6,7 @@
  * Time: 8:45 AM
  */
 
-namespace frame\core;
+namespace core;
 
 
 class Controller
