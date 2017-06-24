@@ -123,40 +123,31 @@ class Entry
     /**
      * Autoload class
      */
+    // !!! TODO: find a better method
     private static function autoLoader()
     {
         spl_autoload_register(function ($className) {
-
-
             // judge the class whether loaded
             if (isset(self::$classMap[$className])) return;
 
-            $classedPaths = [__APP__, __FRAME__];
+            $classesPaths = [__APP__, __FRAME__];
 
-            // ! TODO: fix autoload method
-            foreach ($classedPaths as $key => $classedPath) {
+            foreach ($classesPaths as $key => $classesPath) {
 
-
-                if ($classedPath === __APP__) {
+                if ($classesPath === __APP__) {
                     $module = substr($className, 0, strpos($className, '\\'));
                     if ($module !== 'core') {
                         $GLOBALS['CONTROLLER'] = $module . '/Controller';
                         $GLOBALS['MODEL'] = $module . '/Model';
                         $GLOBALS['VIEW'] = $module . '/View';
                     }
-//
-//
-//                    define('_CONTROLLER_', $module . '/Controller');
-//                    define('_CONTROLLER_', $module . '/Controller');
-//                    define('_MODEL_', $module . '/Model');
-//                    define('_VIEW_', $module . '/view');
                 }
-                $class = $classedPath . '/' . $className . '.php';
+
+                $class = $classesPath . '/' . $className . '.php';
                 $class = str_replace('\\', '/', $class);
                 if (file_exists($class)) require_once($class);
                 self::$classMap[$className] = $className;
             }
-
         });
     }
 
@@ -173,6 +164,7 @@ class Entry
         }
 
         Macaw::dispatch();
+
     }
 
 }

@@ -8,6 +8,8 @@ use NoahBuscher\Macaw\Macaw;
 
 Macaw::get('/', 'Http\Controller\Pages@index');
 
-Macaw::get('/admin', 'Admin\Controller\Pages@index');
+//Macaw::get('help', 'Http\Controller\Pages@help');
 
-Macaw::get('/help', 'Http\Controller\Pages@help');
+Macaw::get('help', function () {
+    echo 'help';
+});
