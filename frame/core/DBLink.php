@@ -70,13 +70,13 @@ class DBLink
      */
     private function linkDB()
     {
-        $dsn = $GLOBALS['conf']['DB_TYPE'] . ':' .
-            'host = ' . $GLOBALS['conf']['DB_HOST'] . ';' .
-            'port = ' . $GLOBALS['conf']['DB_PORT'] . ';' .
-            'dbname = ' . $GLOBALS['conf']['DB_NAME'] . ';' .
-            'charset = ' . $GLOBALS['conf']['DB_CHARSET'];
-        $user = $GLOBALS['conf']['DB_USER'];
-        $pwd = $GLOBALS['conf']['DB_PWD'];
+        $dsn = $GLOBALS['conf']['DATABASE']['TYPE'] . ':' .
+            'host = ' . $GLOBALS['conf']['DATABASE']['HOST'] . ';' .
+            'port = ' . $GLOBALS['conf']['DATABASE']['PORT'] . ';' .
+            'dbname = ' . $GLOBALS['conf']['DATABASE']['NAME'] . ';' .
+            'charset = ' . $GLOBALS['conf']['DATABASE']['CHARSET'];
+        $user = $GLOBALS['conf']['DATABASE']['USER'];
+        $pwd = $GLOBALS['conf']['DATABASE']['PASSWORD'];
 
         try {
             $this->link = new PDO($dsn, $user, $pwd, [

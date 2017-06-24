@@ -3,35 +3,30 @@
 return [
 
     /**
-     * Basic
+     * PHP ini set. You can add your custom php ini here, they will be autoload
+     * when system start run
      */
-
-    'IS_DEBUG' => true,
+    'INI_SET' => [
+        // is show error, please set false when you are in production env
+        'display_errors' => true
+    ],
 
     /**
      * Database
      */
-
-    'DB_TYPE' => 'mysql',
-    'DB_HOST' => 'localhost',
-    'DB_PORT' => '3306',
-    'DB_CHARSET' => 'utf8',
-    'DB_NAME' => '',
-    'DB_USER' => '',
-    'DB_PWD' => '',
-
-    /**
-     * Pages
-     */
-
-    'DEFAULT_MODULE' => 'http',
-    'DEFAULT_CONTROLLER' => 'Index',
-    'DEFAULT_ACTION' => 'index',
+    'DATABASE' => [
+        'TYPE' => 'mysql',
+        'HOST' => 'localhost',
+        'PORT' => '3306',
+        'CHARSET' => 'utf8',
+        'NAME' => '',
+        'USER' => '',
+        'PASSWORD' => ''
+    ],
 
     /**
      * Include self libs
      */
-
-    'FUNCTIONS' => '',
+    'FUNCTIONS' => ''
 
 ];

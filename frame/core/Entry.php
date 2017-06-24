@@ -8,7 +8,8 @@
  */
 
 namespace frame\core;
-use NoahBuscher\Macaw\Macaw;
+
+//use NoahBuscher\Macaw\Macaw;
 
 /**
  * Class Entry
@@ -16,7 +17,6 @@ use NoahBuscher\Macaw\Macaw;
  */
 class Entry
 {
-
     /**
      * ! TODO
      * - route
@@ -30,21 +30,25 @@ class Entry
      */
     public static function run()
     {
-        self::startSession();
+        self::checkENV();
         self::setConst();
         self::readConfig();
-        self::isDebug();
+        self::setIni();
+        self::startSession();
         self::getFunctions();
         self::autoLoader();
         self::route();
     }
 
     /**
-     * Start session
+     * Check current env whether suitable
      */
-    private static function startSession()
+    private static function checkENV()
     {
-        session_start();
+        if (PHP_VERSION < 7) {
+            // give a warning
+            trigger_error('You php version is too low.', E_USER_WARNING);
+        }
     }
 
     /**
@@ -75,19 +79,33 @@ class Entry
      */
     private static function readConfig()
     {
-        $config = file_exists(_CONFIG_ . '/config.php') ?
-            _CONFIG_ . '/config.php' :
-            _CONFIG_ . '/config.example.php';
+        if (!file_exists(_CONFIG_ . '/config.php')) {
+            // ! TODO: fix tips
+            echo 'Please set config.php';
+            // very important, so use "die" whether "return"
+            die;
+        }
 
-        $GLOBALS['conf'] = require_once($config);
+        $GLOBALS['conf'] = require_once(_CONFIG_ . '/config.php');
     }
 
     /**
      * Judge debug mode whether open, if open, system will show errors
      */
-    private static function isDebug()
+    private static function setIni()
     {
-        ini_set('display_errors', $GLOBALS['conf']['IS_DEBUG']);
+        foreach ($GLOBALS['conf']['INI_SET'] as $key => $iniSet) {
+            ini_set($key, $iniSet);
+        }
+    }
+
+    /**
+     * Start session
+     */
+    private static function startSession()
+    {
+        // for memcache ini set, session must open after setIni()
+        session_start();
     }
 
     /**
@@ -121,15 +139,11 @@ class Entry
     }
 
     /**
-     *
+     * include route file
      */
     private static function route()
     {
-        Macaw::get('/(:any)', function ($slug) {
-            echo 'The slug is: ' . $slug;
-        });
 
-        Macaw::dispatch();
     }
 
 }

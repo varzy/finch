@@ -1,3 +1,3 @@
 # FINCH
 
-Maybe the easiest php framework.
+Perhaps the easiest, the lightest, and the most readable php framework.
