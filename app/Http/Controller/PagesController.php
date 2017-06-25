@@ -6,13 +6,13 @@
  * Time: 7:16 PM
  */
 
-namespace Http\controller;
+namespace Http\Controller;
 
 
 use core\Controller;
 use core\GetModel;
 
-class Pages extends Controller
+class PagesController extends Controller
 {
     public function index()
     {

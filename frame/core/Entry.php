@@ -32,6 +32,7 @@ class Entry
     public static function run()
     {
         self::checkENV();
+        self::preLoad();
         self::setConst();
         self::readConfig();
         self::setIni();
@@ -52,6 +53,8 @@ class Entry
             trigger_error('You php version is too low.', E_USER_WARNING);
         }
     }
+
+
 
     /**
      * Set some const
@@ -75,6 +78,11 @@ class Entry
         define('_CONFIG_', __FRAME__ . '/config');
         define('_FUNCTION_', __FRAME__ . '/function');
         define('_ROUTE_', __FRAME__ . '/route');
+    }
+
+    private static function preLoad()
+    {
+
     }
 
     /**
@@ -164,7 +172,7 @@ class Entry
                     }
                 }
 
-                $class = $classesPath . '/' . $className . '.php';
+                $class = $classesPath . '/' . $className . 'Controller.php';
                 $class = str_replace('\\', '/', $class);
                 if (file_exists($class)) require_once($class);
                 self::$classMap[$className] = $className;

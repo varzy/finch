@@ -6,12 +6,12 @@
  * Time: 7:49 PM
  */
 
-namespace Http\model;
+namespace Http\Model;
 
 
 use core\Model;
 
-class Pages extends Model
+class PagesModel extends Model
 {
     public function saySuccess()
     {

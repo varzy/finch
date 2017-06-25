@@ -9,8 +9,6 @@
 namespace core;
 
 
-use Http\Model\Pages;
-
 class GetModel
 {
     public static function getObj($className)
@@ -20,7 +18,7 @@ class GetModel
         $class = str_replace(
             '/',
             '\\',
-            $GLOBALS['MODEL'] . '\\' . $className
+            $GLOBALS['MODEL'] . '\\' . $className . 'Model'
         );
 
         if (!isset($objArr[$class])) {
