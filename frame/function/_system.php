@@ -36,3 +36,8 @@ function error($words)
 {
     show_sys_info($words, "#ff6347");
 }
+
+function getCorrectPath($path)
+{
+    return str_replace('\\', '/', $path);
+}

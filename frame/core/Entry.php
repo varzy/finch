@@ -25,19 +25,17 @@ class Entry
 
     private static $classMap = [];
 
-
     /**
      * Run everything
      */
     public static function run()
     {
         self::checkENV();
-        self::preLoad();
         self::setConst();
         self::readConfig();
+        self::readFunction();
         self::setIni();
         self::startSession();
-        self::getFunctions();
         self::autoLoader();
         self::route();
     }
@@ -53,8 +51,6 @@ class Entry
             trigger_error('You php version is too low.', E_USER_WARNING);
         }
     }
-
-
 
     /**
      * Set some const
@@ -78,11 +74,6 @@ class Entry
         define('_CONFIG_', __FRAME__ . '/config');
         define('_FUNCTION_', __FRAME__ . '/function');
         define('_ROUTE_', __FRAME__ . '/route');
-    }
-
-    private static function preLoad()
-    {
-
     }
 
     /**
@@ -132,7 +123,7 @@ class Entry
     /**
      * Include functions
      */
-    private static function getFunctions()
+    private static function readFunction()
     {
         if (!file_exists(_FUNCTION_ . '/_system.php')) {
             echo '_system.php must exist!';
@@ -154,13 +145,15 @@ class Entry
      */
     private static function autoLoader()
     {
+        // load composer's autoload
+        require_once(__ROOT__ . '/vendor/autoload.php');
+
         // !!! TODO: find a better method
         spl_autoload_register(function ($className) {
             // judge the class whether loaded
             if (isset(self::$classMap[$className])) return;
 
             $classesPaths = [__APP__, __FRAME__];
-
             foreach ($classesPaths as $key => $classesPath) {
 
                 if ($classesPath === __APP__) {
@@ -170,10 +163,15 @@ class Entry
                         $GLOBALS['MODEL'] = $module . '/Model';
                         $GLOBALS['VIEW'] = $module . '/View';
                     }
+
+                    $class = $classesPath . '/' . $className . 'Controller.php';
+                    $class = getCorrectPath($class);
+                    if (file_exists($class)) require_once($class);
+                    continue;
                 }
 
-                $class = $classesPath . '/' . $className . 'Controller.php';
-                $class = str_replace('\\', '/', $class);
+                $class = $classesPath . '/' . $className . 'php';
+                $class = getCorrectPath($class);
                 if (file_exists($class)) require_once($class);
                 self::$classMap[$className] = $className;
             }
@@ -190,7 +188,6 @@ class Entry
             die;
         }
 
-        require_once(__ROOT__ . '/vendor/autoload.php');
         require_once(_ROUTE_ . '/web.php');
 
         if (!empty($GLOBALS['conf']['EXT_ROUTE'])) {
