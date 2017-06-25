@@ -25,6 +25,7 @@ class Entry
 
     private static $classMap = [];
 
+
     /**
      * Run everything
      */
@@ -45,6 +46,7 @@ class Entry
      */
     private static function checkENV()
     {
+        // ! TODO: fix env check's function
         if (PHP_VERSION < 7) {
             // give a warning
             trigger_error('You php version is too low.', E_USER_WARNING);
@@ -80,14 +82,24 @@ class Entry
      */
     private static function readConfig()
     {
-        if (!file_exists(_CONFIG_ . '/config.php')) {
+        if (!file_exists(_CONFIG_ . '/_config.php')) {
             // ! TODO: fix tips
             echo 'Please set config.php';
             // very important, so use "die" whether "return"
             die;
         }
+        // load basic config file
+        $GLOBALS['conf'] = require_once(_CONFIG_ . '/_config.php');
 
-        $GLOBALS['conf'] = require_once(_CONFIG_ . '/config.php');
+        // judge extra config whether empty. if is empty, then don't load
+        // extra config files
+        if (!empty($GLOBALS['conf']['EXT_CONF'])) {
+            foreach ($GLOBALS['conf']['EXT_CONF'] as $key => $extConf) {
+                $extConfPath = _CONFIG_ . '/' . trim($extConf) . '.php';
+                if (file_exists($extConfPath))
+                    $GLOBALS[$extConf] = require_once($extConfPath);
+            }
+        }
     }
 
     /**
@@ -114,18 +126,27 @@ class Entry
      */
     private static function getFunctions()
     {
-        foreach ($GLOBALS['conf']['FUNCTIONS'] as $key => $function) {
-            $funcPath = _FUNCTION_ . '/' . trim($function) . '.php';
-            if (file_exists($funcPath)) require_once($funcPath);
+        if (!file_exists(_FUNCTION_ . '/_system.php')) {
+            echo '_system.php must exist!';
+            die;
+        }
+
+        require_once(_FUNCTION_ . '/_system.php');
+
+        if (!empty($GLOBALS['conf']['EXT_FUNC'])) {
+            foreach ($GLOBALS['conf']['EXT_FUNC'] as $key => $extFunc) {
+                $extFuncPath = _FUNCTION_ . '/' . trim($extFunc) . '.php';
+                if (file_exists($extFuncPath)) require_once($extFuncPath);
+            }
         }
     }
 
     /**
      * Autoload class
      */
-    // !!! TODO: find a better method
     private static function autoLoader()
     {
+        // !!! TODO: find a better method
         spl_autoload_register(function ($className) {
             // judge the class whether loaded
             if (isset(self::$classMap[$className])) return;
@@ -156,15 +177,22 @@ class Entry
      */
     private static function route()
     {
-        require_once(__ROOT__ . '/vendor/autoload.php');
+        if (!file_exists(_ROUTE_ . '/web.php')) {
+            echo 'web.php must exist.';
+            die;
+        }
 
-        foreach ($GLOBALS['conf']['ROUTES'] as $key => $route) {
-            $routePath = _ROUTE_ . '/' . trim($route) . '.php';
-            if (file_exists($routePath)) require_once($routePath);
+        require_once(__ROOT__ . '/vendor/autoload.php');
+        require_once(_ROUTE_ . '/web.php');
+
+        if (!empty($GLOBALS['conf']['EXT_ROUTE'])) {
+            foreach ($GLOBALS['conf']['EXT_ROUTE'] as $key => $extRoute) {
+                $extRoutePath = _ROUTE_ . '/' . trim($extRoute) . '.php';
+                if (file_exists($extRoutePath)) require_once($extRoutePath);
+            }
         }
 
         Macaw::dispatch();
-
     }
 
 }

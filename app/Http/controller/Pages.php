@@ -6,7 +6,7 @@
  * Time: 7:16 PM
  */
 
-namespace Http\Controller;
+namespace Http\controller;
 
 
 use core\Controller;
