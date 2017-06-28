@@ -25,6 +25,10 @@ class Entry
      */
 
     private static $classMap = [];
+    private static $classesDirs = [
+        __APP__,
+        __FRAME__
+    ];
 
     /**
      * Run everything
@@ -94,6 +98,8 @@ class Entry
         }
     }
 
+    // for now, we can use any config or function customized by self.
+
     /**
      * Get global conf
      */
@@ -124,7 +130,7 @@ class Entry
     }
 
     /**
-     * Judge debug mode whether open, if open, system will show errors
+     * set php ini
      */
     private static function setIni()
     {
@@ -154,12 +160,7 @@ class Entry
         spl_autoload_register(function ($className) {
             if (isset(self::$classMap[$className])) return;
 
-            $classesDirs = [
-                __APP__,
-                __FRAME__
-            ];
-
-            foreach ($classesDirs as $key => $classesDir) {
+            foreach (self::$classesDirs as $key => $classesDir) {
                 $classPath = getCorrectPath($classesDir . '/' . $className . '.php');
                 if (file_exists($classPath)) require_once($classPath);
                 self::$classMap[$className] = $className;

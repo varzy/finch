@@ -10,12 +10,14 @@ namespace http\controller;
 
 
 use core\Controller;
+use core\ModelMaker;
 
 class PagesController extends Controller
 {
     public function index()
     {
-        echo 'index';
+        $model = ModelMaker::makeModel('Pages');
+        $model->saySuccess();
     }
 
     public function help()

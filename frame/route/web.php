@@ -11,3 +11,5 @@ Macaw::get('/', 'http\controller\PagesController@index');
 Macaw::get('help', function () {
     echo 'help';
 });
+
+Macaw::get('admin', 'admin\controller\IndexController@index');

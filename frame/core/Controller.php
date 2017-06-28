@@ -11,6 +11,9 @@ namespace core;
 
 class Controller
 {
-
+    protected function returnJSON($data)
+    {
+        echo json_encode($data);
+    }
 
 }

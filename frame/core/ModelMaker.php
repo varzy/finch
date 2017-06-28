@@ -15,15 +15,15 @@ class ModelMaker
     {
         // 返回一个模型类的唯一对象
         static $objArr = [];
-        $class = str_replace(
-            '/',
-            '\\',
-            $GLOBALS['MODEL'] . '\\' . $className . 'Model'
-        );
 
-        if (!isset($objArr[$class])) {
-            $objArr[$class] = new $class;
+        $className = $className . 'Model';
+
+        // !!! TODO: temp
+        $realClass = 'http\\model\\' . $className;
+
+        if (!isset($objArr[$className])) {
+            $objArr[$className] = new $realClass;
         }
-        return $objArr[$class];
+        return $objArr[$className];
     }
 }
