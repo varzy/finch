@@ -9,6 +9,7 @@
 
 namespace core;
 
+
 use NoahBuscher\Macaw\Macaw;
 
 /**
@@ -32,6 +33,7 @@ class Entry
     {
         self::checkENV();
         self::setConst();
+        self::preLoad();
         self::readConfig();
         self::readFunction();
         self::setIni();
@@ -47,7 +49,6 @@ class Entry
     {
         // ! TODO: fix env check's function
         if (PHP_VERSION < 7) {
-            // give a warning
             trigger_error('You php version is too low.', E_USER_WARNING);
         }
     }
@@ -76,27 +77,48 @@ class Entry
         define('_ROUTE_', __FRAME__ . '/route');
     }
 
+    private static function preLoad()
+    {
+        if (!file_exists(_CONFIG_ . '/config.php')) {
+            die('"/frame/config/config.php" must exist!');
+        }
+        $GLOBALS['conf'] = require_once(_CONFIG_ . '/config.php');
+
+        if (!file_exists(_FUNCTION_ . '/system.php')) {
+            die('"/frame/function/system.php" must exist!');
+        }
+        require_once(_FUNCTION_ . '/system.php');
+
+        if (!file_exists(_ROUTE_ . '/web.php')) {
+            die('"/frame/route/web.php" must exist!');
+        }
+    }
+
     /**
      * Get global conf
      */
     private static function readConfig()
     {
-        if (!file_exists(_CONFIG_ . '/_config.php')) {
-            // ! TODO: fix tips
-            echo 'Please set config.php';
-            // very important, so use "die" whether "return"
-            die;
-        }
-        // load basic config file
-        $GLOBALS['conf'] = require_once(_CONFIG_ . '/_config.php');
-
-        // judge extra config whether empty. if is empty, then don't load
-        // extra config files
+        // judge extra config whether empty.
+        // if it is empty, they will never be loaded
         if (!empty($GLOBALS['conf']['EXT_CONF'])) {
             foreach ($GLOBALS['conf']['EXT_CONF'] as $key => $extConf) {
                 $extConfPath = _CONFIG_ . '/' . trim($extConf) . '.php';
                 if (file_exists($extConfPath))
                     $GLOBALS[$extConf] = require_once($extConfPath);
+            }
+        }
+    }
+
+    /**
+     * Include functions
+     */
+    private static function readFunction()
+    {
+        if (!empty($GLOBALS['conf']['EXT_FUNC'])) {
+            foreach ($GLOBALS['conf']['EXT_FUNC'] as $key => $extFunc) {
+                $extFuncPath = _FUNCTION_ . '/' . trim($extFunc) . '.php';
+                if (file_exists($extFuncPath)) require_once($extFuncPath);
             }
         }
     }
@@ -121,26 +143,6 @@ class Entry
     }
 
     /**
-     * Include functions
-     */
-    private static function readFunction()
-    {
-        if (!file_exists(_FUNCTION_ . '/_system.php')) {
-            echo '_system.php must exist!';
-            die;
-        }
-
-        require_once(_FUNCTION_ . '/_system.php');
-
-        if (!empty($GLOBALS['conf']['EXT_FUNC'])) {
-            foreach ($GLOBALS['conf']['EXT_FUNC'] as $key => $extFunc) {
-                $extFuncPath = _FUNCTION_ . '/' . trim($extFunc) . '.php';
-                if (file_exists($extFuncPath)) require_once($extFuncPath);
-            }
-        }
-    }
-
-    /**
      * Autoload class
      */
     private static function autoLoader()
@@ -148,31 +150,18 @@ class Entry
         // load composer's autoload
         require_once(__ROOT__ . '/vendor/autoload.php');
 
-        // !!! TODO: find a better method
+        // register frame's autoloader
         spl_autoload_register(function ($className) {
-            // judge the class whether loaded
             if (isset(self::$classMap[$className])) return;
 
-            $classesPaths = [__APP__, __FRAME__];
-            foreach ($classesPaths as $key => $classesPath) {
+            $classesDirs = [
+                __APP__,
+                __FRAME__
+            ];
 
-                if ($classesPath === __APP__) {
-                    $module = substr($className, 0, strpos($className, '\\'));
-                    if ($module !== 'core') {
-                        $GLOBALS['CONTROLLER'] = $module . '/Controller';
-                        $GLOBALS['MODEL'] = $module . '/Model';
-                        $GLOBALS['VIEW'] = $module . '/View';
-                    }
-
-                    $class = $classesPath . '/' . $className . 'Controller.php';
-                    $class = getCorrectPath($class);
-                    if (file_exists($class)) require_once($class);
-                    continue;
-                }
-
-                $class = $classesPath . '/' . $className . 'php';
-                $class = getCorrectPath($class);
-                if (file_exists($class)) require_once($class);
+            foreach ($classesDirs as $key => $classesDir) {
+                $classPath = getCorrectPath($classesDir . '/' . $className . '.php');
+                if (file_exists($classPath)) require_once($classPath);
                 self::$classMap[$className] = $className;
             }
         });
@@ -183,11 +172,6 @@ class Entry
      */
     private static function route()
     {
-        if (!file_exists(_ROUTE_ . '/web.php')) {
-            echo 'web.php must exist.';
-            die;
-        }
-
         require_once(_ROUTE_ . '/web.php');
 
         if (!empty($GLOBALS['conf']['EXT_ROUTE'])) {

@@ -32,9 +32,10 @@ function warning($words)
     show_sys_info($words, "#f4a460");
 }
 
-function error($words)
+function error($words, $isDie = true)
 {
     show_sys_info($words, "#ff6347");
+    if ($isDie) die;
 }
 
 function getCorrectPath($path)

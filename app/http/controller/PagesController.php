@@ -6,22 +6,16 @@
  * Time: 7:16 PM
  */
 
-namespace Http\Controller;
+namespace http\controller;
 
 
 use core\Controller;
-use core\GetModel;
 
 class PagesController extends Controller
 {
     public function index()
     {
-        $model = GetModel::getObj('Pages');
-        $model->saySuccess();
-        echo '<pre>';
-        var_dump($model);
-        echo '</pre>';
-        die;
+        echo 'index';
     }
 
     public function help()

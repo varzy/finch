@@ -6,7 +6,7 @@
  * Time: 7:49 PM
  */
 
-namespace Http\Model;
+namespace http\model;
 
 
 use core\Model;

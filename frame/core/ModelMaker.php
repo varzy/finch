@@ -9,9 +9,9 @@
 namespace core;
 
 
-class GetModel
+class ModelMaker
 {
-    public static function getObj($className)
+    public static function makeModel($className)
     {
         // 返回一个模型类的唯一对象
         static $objArr = [];
