@@ -5,7 +5,12 @@ charset = utf-8
 indent_style = space
 indent_size = 2
 tab_width = 2
+end_of_line = crlf
 
-[*.php]
+[*.{php,py}]
 indent_size = 4
 tab_width = 4
+
+[*.blade.php]
+indent_size = 2
+tab_width = 2

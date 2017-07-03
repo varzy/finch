@@ -25,9 +25,20 @@ class Entry
      */
 
     private static $classMap = [];
+    /**
+     * @var array
+     */
     private static $classesDirs = [
         __APP__,
         __FRAME__
+    ];
+    /**
+     * @var array
+     */
+    private static $preLoadFiles = [
+        _CONFIG_ . '/config.php',
+        _FUNCTION_ . '/system.php',
+        _ROUTE_ . '/web.php'
     ];
 
     /**
@@ -69,6 +80,8 @@ class Entry
             dirname($_SERVER['DOCUMENT_ROOT'])
         ));
 
+
+
         // define first level path
         define('__APP__', __ROOT__ . '/app');
         define('__FRAME__', __ROOT__ . '/frame');
@@ -81,21 +94,18 @@ class Entry
         define('_ROUTE_', __FRAME__ . '/route');
     }
 
+    /**
+     *
+     */
     private static function preLoad()
     {
-        if (!file_exists(_CONFIG_ . '/config.php')) {
-            die('"/frame/config/config.php" must exist!');
+        foreach (self::$preLoadFiles as $key => $preLoadFile) {
+            if (!file_exists($preLoadFile))
+                die($preLoadFile . ' must exist!');
         }
+
         $GLOBALS['conf'] = require_once(_CONFIG_ . '/config.php');
-
-        if (!file_exists(_FUNCTION_ . '/system.php')) {
-            die('"/frame/function/system.php" must exist!');
-        }
         require_once(_FUNCTION_ . '/system.php');
-
-        if (!file_exists(_ROUTE_ . '/web.php')) {
-            die('"/frame/route/web.php" must exist!');
-        }
     }
 
     // for now, we can use any config or function customized by self.
@@ -109,9 +119,11 @@ class Entry
         // if it is empty, they will never be loaded
         if (!empty($GLOBALS['conf']['EXT_CONF'])) {
             foreach ($GLOBALS['conf']['EXT_CONF'] as $key => $extConf) {
+                // !!! TODO: set upper and lower
                 $extConfPath = _CONFIG_ . '/' . trim($extConf) . '.php';
-                if (file_exists($extConfPath))
+                if (file_exists($extConfPath)) {
                     $GLOBALS[$extConf] = require_once($extConfPath);
+                }
             }
         }
     }
@@ -124,7 +136,8 @@ class Entry
         if (!empty($GLOBALS['conf']['EXT_FUNC'])) {
             foreach ($GLOBALS['conf']['EXT_FUNC'] as $key => $extFunc) {
                 $extFuncPath = _FUNCTION_ . '/' . trim($extFunc) . '.php';
-                if (file_exists($extFuncPath)) require_once($extFuncPath);
+                if (file_exists($extFuncPath))
+                    require_once($extFuncPath);
             }
         }
     }
@@ -161,8 +174,9 @@ class Entry
             if (isset(self::$classMap[$className])) return;
 
             foreach (self::$classesDirs as $key => $classesDir) {
-                $classPath = getCorrectPath($classesDir . '/' . $className . '.php');
-                if (file_exists($classPath)) require_once($classPath);
+                $classPath = get_correct_path($classesDir . '/' . $className . '.php');
+                if (file_exists($classPath))
+                    require_once($classPath);
                 self::$classMap[$className] = $className;
             }
         });
@@ -177,8 +191,9 @@ class Entry
 
         if (!empty($GLOBALS['conf']['EXT_ROUTE'])) {
             foreach ($GLOBALS['conf']['EXT_ROUTE'] as $key => $extRoute) {
-                $extRoutePath = _ROUTE_ . '/' . trim($extRoute) . '.php';
-                if (file_exists($extRoutePath)) require_once($extRoutePath);
+                $extRoutePath = _ROUTE_ . '/' . trim(strtolower($extRoute)) . '.php';
+                if (file_exists($extRoutePath))
+                    require_once($extRoutePath);
             }
         }
 

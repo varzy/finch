@@ -19,15 +19,15 @@ return [
         'HOST' => 'localhost',
         'PORT' => '3306',
         'CHARSET' => 'utf8',
-        'NAME' => '_test',
-        'USER' => 'root',
-        'PASSWORD' => 'aidenm'
+        'NAME' => '_mess',
+        'USER' => 'zy',
+        'PASSWORD' => 'aidenz'
     ],
 
     /**
      * Set extra config
      */
-    'EXT_CONF' => [],
+    'EXT_CONF' => ['test', 'asd'],
 
     /**
      * Functions

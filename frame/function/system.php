@@ -38,7 +38,7 @@ function error($words, $isDie = true)
     if ($isDie) die;
 }
 
-function getCorrectPath($path)
+function get_correct_path($path)
 {
     return str_replace('\\', '/', $path);
 }
