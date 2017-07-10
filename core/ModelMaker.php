@@ -16,14 +16,12 @@ class ModelMaker
         // 返回一个模型类的唯一对象
         static $objArr = [];
 
-        $className = $className . 'Model';
-
-        // !!! TODO: temp
-        $realClass = 'http\\model\\' . $className;
+        $realClass = 'app\\model\\' . $className . 'Model';
 
         if (!isset($objArr[$className])) {
             $objArr[$className] = new $realClass;
         }
+
         return $objArr[$className];
     }
 }

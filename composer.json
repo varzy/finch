@@ -8,5 +8,14 @@
   ],
   "require": {
     "noahbuscher/macaw": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "app/",
+      "core\\": "core/"
+    },
+    "files": [
+      "core/Function.php"
+    ]
   }
 }

@@ -16,4 +16,8 @@ class Controller
         echo json_encode($data);
     }
 
+    protected function test()
+    {
+        echo 'test';
+    }
 }

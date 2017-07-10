@@ -1,4 +1,4 @@
 <?php
 
-require_once('../frame/core/Entry.php');
-core\Entry::run();
+require_once('../core/Entry.php');
+\core\Entry::run();
