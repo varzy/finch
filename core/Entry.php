@@ -19,13 +19,6 @@ use NoahBuscher\Macaw\Macaw;
 class Entry
 {
     /**
-     * ! TODO
-     * - route
-     * - custom function
-     */
-
-
-    /**
      * Run everything
      */
     public static function run()
@@ -49,19 +42,27 @@ class Entry
         }
     }
 
-    private function setConst()
+    /**
+     * Set some constants
+     */
+    private static function setConst()
     {
         define('__CORE__', __DIR__);
         define('__ROOT__', dirname(__CORE__));
     }
 
-
+    /**
+     * Include composer's autoload
+     */
     private static function getAutoload()
     {
         require(__ROOT__ . '/vendor/autoload.php');
     }
 
-    private function setConfig()
+    /**
+     * Set configs
+     */
+    private static function setConfig()
     {
         define('_DB_', require(__ROOT__ . '/config/database.php'));
 
@@ -80,7 +81,10 @@ class Entry
         session_start();
     }
 
-    private function route()
+    /**
+     * Use Macaw as route component
+     */
+    private static function route()
     {
         require(__ROOT__ . '/config/route.php');
         Macaw::dispatch();

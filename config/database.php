@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Database
+ * Database settings
  */
 
 return [
