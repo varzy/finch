@@ -15,6 +15,15 @@ class StaticPagesModel extends Model
 {
     public function modelTest()
     {
-        echo 'I\'m a model!';
+        echo 'I\'m a model!', '<br>';
+
+        $res = $this->from('temp')
+            ->where('id = 1')
+            ->select();
+
+echo '<pre>';
+var_dump($res);
+echo '</pre>';
+die;
     }
 }

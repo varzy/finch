@@ -16,73 +16,114 @@ class Model
 {
     private $link = null;
 
+    private $sql = [
+        'from' => '',
+        'where' => '',
+        'order' => '',
+        'limit' => '',
+        'select' => '',
+        'join' => ''
+    ];
+
     public function __construct()
     {
         $dbLink = DBLink::getLink();
         $this->link = $dbLink->link;
     }
 
-    public function select($sql, $params = [])
+    public function from($_from)
     {
-        try {
-            $result = $this->doSql($sql, $params);
-            return $result['stmt']->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $this->getError($e);
-        }
+        $this->sql['from'] = ' FROM ' . $_from;
+        return $this;
     }
 
-    public function find($sql, $params = [])
+    public function where($_where)
     {
-        try {
-            $result = $this->doSql($sql, $params);
-            return $result['stmt']->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            $this->getError($e);
-        }
+        $this->sql['where'] = ' WHERE ' . $_where;
+        return $this;
     }
 
-    public function count($sql, $params = [])
+    public function order($_order)
     {
-        try {
-            $result = $this->doSql($sql, $params);
-            return $result['stmt']->fetchColumn();
-        } catch (PDOException $e) {
-            $this->getError($e);
-        }
+        $this->sql['order'] = ' ORDER BY ' . $_order;
+        return $this;
     }
 
-    public function exec($sql, $params = [])
+    public function limit($_limit)
     {
-        try {
-            $result = $this->doSql($sql, $params);
-            return $result['isSuccess'] ? $result['stmt']->rowCount() : false;
-        } catch (PDOException $e) {
-            $this->getError($e);
-        }
+        $this->sql['limit'] = ' LIMIT ' . $_limit;
+        return $this;
     }
 
-    private function doSql($sql, $params)
+    public function select($_select = '*')
     {
-        $stmt = $this->link->prepare($sql);
-        if ($params) {
-            foreach ($params as $key => $value) {
-                is_string($key) ? $stmt->bindValue($key, $value) : $stmt->bindValue($key + 1, $value);
-            }
-        }
-        $isSuccess = $stmt->execute();
-        return [
-            'stmt' => $stmt,
-            'isSuccess' => $isSuccess,
-        ];
+        // !!! TODO: fix here
+        $totalSql = ' SELECT ' . $_select . ' ' . (implode(" ", $this->sql));
+        return $totalSql;
     }
 
-    private function getError($e)
-    {
-        echo 'Error Info: ', $e->getMessage(), '<br>';
-        echo 'Error File: ', $e->getFile(), '<br>';
-        echo 'Error Code: ', $e->getCode(), '<br>';
-        echo 'Wrong in this line: ', $e->getLine(), '<br>';
-        die;
-    }
+
+//    public function select($sql, $params = [])
+//    {
+//        try {
+//            $result = $this->doSql($sql, $params);
+//            return $result['stmt']->fetchAll(PDO::FETCH_ASSOC);
+//        } catch (PDOException $e) {
+//            $this->getError($e);
+//        }
+//    }
+//
+//    public function find($sql, $params = [])
+//    {
+//        try {
+//            $result = $this->doSql($sql, $params);
+//            return $result['stmt']->fetch(PDO::FETCH_ASSOC);
+//        } catch (PDOException $e) {
+//            $this->getError($e);
+//        }
+//    }
+//
+//    public function count($sql, $params = [])
+//    {
+//        try {
+//            $result = $this->doSql($sql, $params);
+//            return $result['stmt']->fetchColumn();
+//        } catch (PDOException $e) {
+//            $this->getError($e);
+//        }
+//    }
+//
+//    public function exec($sql, $params = [])
+//    {
+//        try {
+//            $result = $this->doSql($sql, $params);
+//            return $result['isSuccess'] ? $result['stmt']->rowCount() : false;
+//        } catch (PDOException $e) {
+//            $this->getError($e);
+//        }
+//    }
+//
+//    private function doSql($sql, $params)
+//    {
+//        $stmt = $this->link->prepare($sql);
+//        if ($params) {
+//            foreach ($params as $key => $value) {
+//                is_string($key) ? $stmt->bindValue($key, $value) : $stmt->bindValue($key + 1, $value);
+//            }
+//        }
+//        $isSuccess = $stmt->execute();
+//        return [
+//            'stmt' => $stmt,
+//            'isSuccess' => $isSuccess,
+//        ];
+//    }
+//
+//    private function getError($e)
+//    {
+//        echo 'Error Info: ', $e->getMessage(), '<br>';
+//        echo 'Error File: ', $e->getFile(), '<br>';
+//        echo 'Error Code: ', $e->getCode(), '<br>';
+//        echo 'Wrong in this line: ', $e->getLine(), '<br>';
+//        die;
+//    }
 }
