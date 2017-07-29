@@ -10,11 +10,13 @@ function do_nothing()
     ;
 }
 
-function debug($var)
+function debug($var, $isDie = false)
 {
     echo '<pre>';
     var_dump($var);
     echo '</pre>';
+
+    if ($isDie) die();
 }
 
 function show_sys_info($words, $border_color = '#eee')
@@ -38,7 +40,12 @@ function error($words, $isDie = true)
     if ($isDie) die;
 }
 
-function get_correct_path($path)
+function get_slash($str)
 {
-    return str_replace('\\', '/', $path);
+    return str_replace('\\', '/', $str);
+}
+
+function get_backslash($str)
+{
+    return str_replace('/', '\\', $str);
 }

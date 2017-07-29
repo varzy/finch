@@ -7,3 +7,8 @@
 .idea
 vendor/*
 node_modules/*
+
+public/css
+public/js
+public/img
+public/font

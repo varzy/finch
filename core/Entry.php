@@ -36,9 +36,8 @@ class Entry
      */
     private static function checkENV()
     {
-        if (PHP_VERSION < 7) {
+        if (PHP_VERSION < 7)
             trigger_error('You php version is too low.', E_USER_WARNING);
-        }
     }
 
     /**
@@ -48,6 +47,7 @@ class Entry
     {
         define('__CORE__', __DIR__);
         define('__ROOT__', dirname(__CORE__));
+        define('__VIEW__', __ROOT__ . '/view');
     }
 
     /**
@@ -64,6 +64,7 @@ class Entry
     private static function setConfig()
     {
         define('_DB_', require(__ROOT__ . '/config/database.php'));
+        define('_ENV_', require(__ROOT__ . './config/env.php'));
 
         $iniSets = require(__ROOT__ . '/config/iniset.php');
         foreach ($iniSets as $key => $iniSet) {
