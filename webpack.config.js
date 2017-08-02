@@ -11,7 +11,7 @@ module.exports = {
   entry: './resource/entry.js',
   output: {
     path: path.resolve(__dirname, './public'),
-    filename: './script/app.js',
+    filename: './js/app.js',
   },
   module: {
     loaders: [

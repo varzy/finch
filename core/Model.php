@@ -14,7 +14,7 @@ use PDOException;
 
 class Model
 {
-    private $link = null;
+    protected $link = null;
 
     private $sql = [
         'from' => '',
@@ -27,8 +27,8 @@ class Model
 
     public function __construct()
     {
-        $dbLink = DBLink::getLink();
-        $this->link = $dbLink->link;
+        $dbLink = DBLink::getDbObj();
+        $this->link = $dbLink->getLink();
     }
 
     public function from($_from)
@@ -55,12 +55,12 @@ class Model
         return $this;
     }
 
-    public function select($_select = '*')
-    {
-        // !!! TODO: fix here
-        $totalSql = ' SELECT ' . $_select . ' ' . (implode(" ", $this->sql));
-        return $totalSql;
-    }
+//    public function select($_select = '*')
+//    {
+//        // !!! TODO: fix here
+//        $totalSql = ' SELECT ' . $_select . ' ' . (implode(" ", $this->sql));
+//        return $totalSql;
+//    }
 
 
 //    public function select($sql, $params = [])

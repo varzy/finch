@@ -2,15 +2,14 @@
 /**
  * Created by PhpStorm.
  * User: zy
- * Date: 06/12/17
- * Time: 8:47 AM
+ * Date: 8/2/2017
+ * Time: 9:20 PM
  */
 
 namespace core;
 
 
 use PDO;
-use PDOException;
 
 /**
  * Class DBLink
@@ -25,25 +24,14 @@ class DBLink
     /**
      * @var null
      */
-    private static $isInit = null;
+    private static $dbObj = null;
 
     /**
      * DBLink constructor.
      */
     private function __construct()
     {
-        $this->linkDB();
-    }
-
-    /**
-     * @return DBLink|null
-     */
-    public static function getLink()
-    {
-        if (self::$isInit == null) {
-            self::$isInit = new self;
-        }
-        return self::$isInit;
+        $this->getNewLink();
     }
 
     /**
@@ -54,37 +42,39 @@ class DBLink
     }
 
     /**
-     * @param $name
-     * @return null
+     * @return DBLink|null
      */
-    public function __get($name)
+    public static function getDbObj()
     {
-        if (isset($this->$name)) {
-            return $this->$name;
+        if (self::$dbObj == null) {
+            self::$dbObj = new self();
         }
-        return null;
+
+        return self::$dbObj;
     }
 
     /**
-     * Connect to database
+     *
      */
-    private function linkDB()
+    private function getNewLink()
     {
-        $dsn = _DB_['DRIVER'] . ':' .
-            'host = ' . _DB_['HOST'] . ';' .
-            'port = ' . _DB_['PORT'] . ';' .
-            'dbname = ' . _DB_['NAME'] . ';' .
-            'charset = ' . _DB_['CHARSET'];
-        $user = _DB_['USER'];
-        $pwd = _DB_['PASSWORD'];
+        $dsn = _ENV_['DB_DRIVER'] . ':' .
+            'host = ' . _ENV_['DB_HOST'] . ';' .
+            'port = ' . _ENV_['DB_PORT'] . ';' .
+            'dbname = ' . _ENV_['DB_NAME'] . ';' .
+            'charset = ' . _ENV_['DB_CHARSET'];
+        $user = _ENV_['DB_USER'];
+        $pwd = _ENV_['DB_PASSWORD'];
 
-        try {
-            $this->link = new PDO($dsn, $user, $pwd, [
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
-            ]);
-        } catch (PDOException $e) {
-            die($e->getMessage());
-        }
+        $this->link = new PDO($dsn, $user, $pwd);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLink()
+    {
+        return $this->link;
     }
 
 }

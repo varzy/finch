@@ -7,8 +7,11 @@
 .idea
 vendor/*
 node_modules/*
+_dev/*
 
 public/css
 public/js
 public/img
 public/font
+
+config/env.php

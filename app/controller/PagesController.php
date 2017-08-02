@@ -14,17 +14,12 @@ use core\ViewMaker;
 
 class PagesController extends Controller
 {
-    public function demo()
+    public function welcome()
     {
-        $model = ModelMaker::makeModel('Auth/User');
-        $userInfo = $model->getUserInfo();
+        $model = ModelMaker::makeModel('Info');
+        $info = $model->giveFakeInfo();
 
-        $title = 'Demo';
-
-        ViewMaker::makeView(
-            'pages/demo.php',
-            compact('userInfo', 'title')
-        );
+        ViewMaker::makeView('welcome.php', compact('info'));
     }
 
 }
