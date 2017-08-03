@@ -10,120 +10,157 @@ namespace core;
 
 
 use PDO;
-use PDOException;
 
+/**
+ * Class Model
+ * @package core
+ */
 class Model
 {
-    protected $link = null;
+    /**
+     * @var mixed|null
+     */
+    private $link;
 
+    /**
+     * @var array
+     */
     private $sql = [
+        'select' => '',
         'from' => '',
         'where' => '',
+        'group' => '',
+        'having' => '',
         'order' => '',
         'limit' => '',
-        'select' => '',
         'join' => ''
     ];
 
+    /**
+     * Model constructor
+     */
     public function __construct()
     {
         $dbLink = DBLink::getDbObj();
         $this->link = $dbLink->getLink();
     }
 
-    public function from($_from)
+    /**
+     * @param string $select
+     * @return $this
+     */
+    public function select($select = '*')
     {
-        $this->sql['from'] = ' FROM ' . $_from;
+        $this->sql['select'] = 'SELECT ' . $select;
         return $this;
     }
 
-    public function where($_where)
+    /**
+     * @param $from
+     * @return $this
+     */
+    public function from($from)
     {
-        $this->sql['where'] = ' WHERE ' . $_where;
+        $this->sql['from'] = ' FROM ' . $from;
         return $this;
     }
 
-    public function order($_order)
+    /**
+     * @param $where
+     * @return $this
+     */
+    public function where($where)
     {
-        $this->sql['order'] = ' ORDER BY ' . $_order;
+        $this->sql['where'] = ' WHERE ' . $where;
         return $this;
     }
 
-    public function limit($_limit)
+    /**
+     * @param $group
+     * @return $this
+     */
+    public function group($group)
     {
-        $this->sql['limit'] = ' LIMIT ' . $_limit;
+        $this->sql['group'] = ' GROUP BY ' . $group;
         return $this;
     }
 
-//    public function select($_select = '*')
+    /**
+     * @param $having
+     * @return $this
+     */
+    public function having($having)
+    {
+        $this->sql['having'] = ' HAVING ' . $having;
+        return $this;
+    }
+
+    /**
+     * @param $order
+     * @return $this
+     */
+    public function order($order)
+    {
+        $this->sql['order'] = ' ORDER BY ' . $order;
+        return $this;
+    }
+
+    /**
+     * @param $limit
+     * @return $this
+     */
+    public function limit($limit)
+    {
+        $this->sql['limit'] = ' LIMIT ' . $limit;
+        return $this;
+    }
+
+    /**
+     * @param $join
+     * @return $this
+     */
+    public function join($join)
+    {
+        $this->sql['join'] = ' JOIN ' . $join;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAll()
+    {
+        $sql = implode($this->sql);
+        $stmt = $this->link->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOne()
+    {
+        $sql = implode($this->sql);
+        $stmt = $this->link->query($sql);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * @param $original
+     */
+    public function original($original)
+    {
+
+    }
+
+    /**
+     * You can also use __call method, but this method will lose ide's
+     * auto complete
+     */
+//    public function __call($name, $args)
 //    {
-//        // !!! TODO: fix here
-//        $totalSql = ' SELECT ' . $_select . ' ' . (implode(" ", $this->sql));
-//        return $totalSql;
+//        $this->sql[$args] = $args;
+//        return $this;
 //    }
 
-
-//    public function select($sql, $params = [])
-//    {
-//        try {
-//            $result = $this->doSql($sql, $params);
-//            return $result['stmt']->fetchAll(PDO::FETCH_ASSOC);
-//        } catch (PDOException $e) {
-//            $this->getError($e);
-//        }
-//    }
-//
-//    public function find($sql, $params = [])
-//    {
-//        try {
-//            $result = $this->doSql($sql, $params);
-//            return $result['stmt']->fetch(PDO::FETCH_ASSOC);
-//        } catch (PDOException $e) {
-//            $this->getError($e);
-//        }
-//    }
-//
-//    public function count($sql, $params = [])
-//    {
-//        try {
-//            $result = $this->doSql($sql, $params);
-//            return $result['stmt']->fetchColumn();
-//        } catch (PDOException $e) {
-//            $this->getError($e);
-//        }
-//    }
-//
-//    public function exec($sql, $params = [])
-//    {
-//        try {
-//            $result = $this->doSql($sql, $params);
-//            return $result['isSuccess'] ? $result['stmt']->rowCount() : false;
-//        } catch (PDOException $e) {
-//            $this->getError($e);
-//        }
-//    }
-//
-//    private function doSql($sql, $params)
-//    {
-//        $stmt = $this->link->prepare($sql);
-//        if ($params) {
-//            foreach ($params as $key => $value) {
-//                is_string($key) ? $stmt->bindValue($key, $value) : $stmt->bindValue($key + 1, $value);
-//            }
-//        }
-//        $isSuccess = $stmt->execute();
-//        return [
-//            'stmt' => $stmt,
-//            'isSuccess' => $isSuccess,
-//        ];
-//    }
-//
-//    private function getError($e)
-//    {
-//        echo 'Error Info: ', $e->getMessage(), '<br>';
-//        echo 'Error File: ', $e->getFile(), '<br>';
-//        echo 'Error Code: ', $e->getCode(), '<br>';
-//        echo 'Wrong in this line: ', $e->getLine(), '<br>';
-//        die;
-//    }
 }

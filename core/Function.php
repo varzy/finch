@@ -40,12 +40,12 @@ function error($words, $isDie = true)
     if ($isDie) die;
 }
 
-function get_slash($str)
+function to_slash($str)
 {
     return str_replace('\\', '/', $str);
 }
 
-function get_backslash($str)
+function to_backslash($str)
 {
     return str_replace('/', '\\', $str);
 }

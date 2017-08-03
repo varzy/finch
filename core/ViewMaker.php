@@ -9,15 +9,24 @@
 namespace core;
 
 
+/**
+ * Class ViewMaker
+ * @package core
+ */
 class ViewMaker
 {
+    /**
+     * @param $view
+     * @param array $data
+     */
     public static function makeView($view, $data = [])
     {
         if (!empty($data))
             extract($data);
 
-        $realView = get_slash(__VIEW__ . '/' . $view);
+        $realView = to_slash(__VIEW__ . '/' . $view);
         if (file_exists($realView))
             require($realView);
     }
+
 }

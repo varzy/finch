@@ -15,9 +15,13 @@ class InfoModel extends Model
 {
     public function giveFakeInfo()
     {
+//        $data = $this->select()->from('test')->getAll();
+//        debug($data, true);
+
         return [
             'title' => 'Welcome to use FINCH!',
             'sentence' => 'Perhaps the easiest, the lightest, and the most readable php framework.'
         ];
     }
+
 }

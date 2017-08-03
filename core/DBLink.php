@@ -12,21 +12,25 @@ namespace core;
 use PDO;
 
 /**
- * Class DBLink
+ * Singleton Class DBLink
  * @package core
  */
 class DBLink
 {
     /**
-     * @var
-     */
-    private $link;
-    /**
+     * Singleton class object
      * @var null
      */
     private static $dbObj = null;
 
     /**
+     * Database link handle
+     * @var
+     */
+    private $link;
+
+    /**
+     * Get a new database link
      * DBLink constructor.
      */
     private function __construct()
@@ -70,6 +74,7 @@ class DBLink
     }
 
     /**
+     * get | set
      * @return mixed
      */
     public function getLink()

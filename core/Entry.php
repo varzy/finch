@@ -72,11 +72,10 @@ class Entry
     }
 
     /**
-     * Start session
+     * Start session. For memcache ini set, session must open after setIni()
      */
     private static function startSession()
     {
-        // for memcache ini set, session must open after setIni()
         session_start();
     }
 
