@@ -8,8 +8,8 @@
 <body>
 
 <div>
-  <h1><?php echo $info['title'] ?></h1>
-  <p><?php echo $info['sentence'] ?></p>
+  <h1>Welcome to use FINCH!</h1>
+  <p>Perhaps the easiest, the lightest, and the most readable php framework.</p>
 </div>
 
 </body>

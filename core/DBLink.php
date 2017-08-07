@@ -35,7 +35,16 @@ class DBLink
      */
     private function __construct()
     {
-        $this->getNewLink();
+        // get a new db link
+        $dsn = _ENV_['DB_DRIVER'] . ':' .
+            'host = ' . _ENV_['DB_HOST'] . ';' .
+            'port = ' . _ENV_['DB_PORT'] . ';' .
+            'dbname = ' . _ENV_['DB_NAME'] . ';' .
+            'charset = ' . _ENV_['DB_CHARSET'];
+        $user = _ENV_['DB_USER'];
+        $pwd = _ENV_['DB_PASSWORD'];
+
+        $this->link = new PDO($dsn, $user, $pwd);
     }
 
     /**
@@ -55,22 +64,6 @@ class DBLink
         }
 
         return self::$dbObj;
-    }
-
-    /**
-     *
-     */
-    private function getNewLink()
-    {
-        $dsn = _ENV_['DB_DRIVER'] . ':' .
-            'host = ' . _ENV_['DB_HOST'] . ';' .
-            'port = ' . _ENV_['DB_PORT'] . ';' .
-            'dbname = ' . _ENV_['DB_NAME'] . ';' .
-            'charset = ' . _ENV_['DB_CHARSET'];
-        $user = _ENV_['DB_USER'];
-        $pwd = _ENV_['DB_PASSWORD'];
-
-        $this->link = new PDO($dsn, $user, $pwd);
     }
 
     /**
