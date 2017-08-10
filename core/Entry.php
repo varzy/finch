@@ -9,7 +9,6 @@
 
 namespace core;
 
-
 use NoahBuscher\Macaw\Macaw;
 
 /**
@@ -36,8 +35,10 @@ class Entry
      */
     private static function checkENV()
     {
-        if (PHP_VERSION < 7)
+        if (PHP_VERSION < 7) {
             trigger_error('You php version is too low!', E_USER_WARNING);
+        }
+
     }
 
     /**
@@ -55,7 +56,7 @@ class Entry
      */
     private static function getAutoload()
     {
-        require(__ROOT__ . '/vendor/autoload.php');
+        require __ROOT__ . '/vendor/autoload.php';
     }
 
     /**
@@ -63,9 +64,12 @@ class Entry
      */
     private static function setConfig()
     {
-        define('_ENV_', require(__ROOT__ . './config/env.php'));
+        $envFile = file_exists(__ROOT__ . './config/env.php') ?
+            'env.php' :
+            'env.example.php';
+        define('_ENV_', require(__ROOT__ . './config/' . $envFile));
 
-        $iniSets = require(__ROOT__ . '/config/iniset.php');
+        $iniSets = require __ROOT__ . '/config/iniset.php';
         foreach ($iniSets as $key => $iniSet) {
             ini_set($key, $iniSet);
         }
@@ -84,7 +88,7 @@ class Entry
      */
     private static function route()
     {
-        require(__ROOT__ . '/config/route.php');
+        require __ROOT__ . '/config/route.php';
         Macaw::dispatch();
     }
 
