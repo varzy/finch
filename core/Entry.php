@@ -64,10 +64,11 @@ class Entry
      */
     private static function setConfig()
     {
-        $envFile = file_exists(__ROOT__ . './config/env.php') ?
-            'env.php' :
-            'env.example.php';
-        define('_ENV_', require(__ROOT__ . './config/' . $envFile));
+        $envFile = file_exists(__ROOT__ . '/config/env.php') ?
+            __ROOT__ . '/config/env.php' :
+            __ROOT__ . '/config/env.example.php';
+
+        define('_ENV_', require($envFile));
 
         $iniSets = require __ROOT__ . '/config/iniset.php';
         foreach ($iniSets as $key => $iniSet) {
