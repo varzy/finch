@@ -19,7 +19,7 @@
     "watch": "webpack -w --display-modules --display-reasons"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.18.1",
     "vue": "^2.4.2"
   },
   "devDependencies": {
