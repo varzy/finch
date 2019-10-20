@@ -36,7 +36,7 @@ class Entry
     private static function checkENV()
     {
         if (PHP_VERSION < 7) {
-            trigger_error('You php version is too low!', E_USER_WARNING);
+            trigger_error('Your php version is too low!', E_USER_WARNING);
         }
 
     }
